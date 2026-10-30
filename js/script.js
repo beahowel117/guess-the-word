@@ -36,6 +36,7 @@ function validateInput(input) {
         return input;
     }
 };
+
 function updateGuessedLetters() {
     guessedLettersList.innerHTML = "";
 
@@ -45,6 +46,7 @@ function updateGuessedLetters() {
         guessedLettersList.append(listItem);
     }
 };
+
 function makeGuess(letter) {
     const upperCaseLetter = letter.toUpperCase();
 
@@ -54,6 +56,14 @@ function makeGuess(letter) {
         guessedLetters.push(upperCaseLetter);
         updateGuessedLetters();
         updateWordInProgress(guessedLetters);
+        didPlayerWin();
+    }
+};
+
+function didPlayerWin() {
+    if (word.toUpperCase() === wordInProgress.innerText) {
+        message.classList.add("win");
+        message.innerHTML = `<p class="highlight">You guessed the correct word! Congrats!</p>`;
     }
 };
 

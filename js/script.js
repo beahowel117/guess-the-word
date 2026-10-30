@@ -9,19 +9,19 @@ const hiddenButton = document.querySelector(".hide");
 const guessedLetters = [];
 let word = "magnolia";
 
-function updateWordInProgress(word){
-    // Implementation for handling the next letter guess
-    const placeholders = [];
+function updateWordInProgress(guessedLetters) {
+    const wordUpper = word.toUpperCase();
+    const wordArray = wordUpper.split("");
+    console.log(wordArray);
 
-    for(const letter of word) {
-        console.log(letter);
-        placeholders.push("●");
-    }
+    const updatedWord = wordArray.map(letter =>
+        guessedLetters.includes(letter) ? letter : "●"
+    );
 
-    return wordInProgress.innerText = placeholders.join("");
+    wordInProgress.innerText = updatedWord.join("");
 }
 
-updateWordInProgress(word);
+updateWordInProgress(guessedLetters);
 
 function validateInput(input) {
     const acceptedLetter = /[a-zA-Z]/;
@@ -36,19 +36,25 @@ function validateInput(input) {
         return input;
     }
 };
+function updateGuessedLetters() {
+    guessedLettersList.innerHTML = "";
 
-function makeGuess(letter) {
-    let upperCaseLetter = letter.toUpperCase();
-
-    for (const guessedLetter of guessedLetters) {
-        if (upperCaseLetter === guessedLetter) {
-            message.innerText = "You already guessed that letter. Try again.";
-            return;
-        }
+    for (const letter of guessedLetters) {
+        const listItem = document.createElement("li");
+        listItem.innerText = letter;
+        guessedLettersList.append(listItem);
     }
+};
+function makeGuess(letter) {
+    const upperCaseLetter = letter.toUpperCase();
 
-    console.log('guessedLetters:', guessedLetters);
-    guessedLetters.push(upperCaseLetter);
+    if (guessedLetters.includes(upperCaseLetter)) {
+        message.innerText = "You already guessed that letter. Try again.";
+    } else {
+        guessedLetters.push(upperCaseLetter);
+        updateGuessedLetters();
+        updateWordInProgress(guessedLetters);
+    }
 };
 
 guessButton.addEventListener("click", function(e) {
